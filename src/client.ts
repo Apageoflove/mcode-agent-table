@@ -51,10 +51,10 @@ export class SeatClient {
 
   /** Disclosure rules run on the bot's side, before anything reaches the table. */
   private guard(req: PostRequest) {
-    for (const re of this.disclosure.deny ?? []) {
-      const text = [req.body ?? '', JSON.stringify(req.effects ?? []), JSON.stringify(req.artifact ?? '')].join('\n');
-      if (re.test(text)) throw new ByobError('E_DISCLOSURE', `blocked by owner disclosure rule ${re}`);
-    }
+    const text = [req.body ?? '', JSON.stringify(req.effects ?? []), JSON.stringify(req.artifact ?? '')].join('\n');
+    const i = (this.disclosure.deny ?? []).findIndex(re => re.test(text));
+    // Name the rule by position only: its pattern is itself the private detail it protects.
+    if (i >= 0) throw new ByobError('E_DISCLOSURE', `blocked by owner disclosure rule #${i + 1}`);
   }
 
   async post(req: PostRequest): Promise<Entry> { this.guard(req); return call(this.baseUrl, this.path('entries'), 'POST', this.token, req); }
@@ -132,6 +132,12 @@ export interface Brain {
   onReported?(t: Task, receipt: Entry, p: Projection): Promise<{ result: 'pass' | 'fail'; body: string } | null>;
 }
 
+/** Fixed text posted in place of something the owner's disclosure rules withheld. */
+const withheld = (what: string) => `(my ${what} was withheld by my owner's disclosure rules)`;
+/** When the owner's disclosure rules block a post, send `fallback` instead; other errors pass through. */
+const orWithheld = <T,>(post: Promise<T>, fallback: () => Promise<T>) =>
+  post.catch(err => { if ((err as ByobError).code !== 'E_DISCLOSURE') throw err; return fallback(); });
+
 export async function runSeat(c: SeatClient, brain: Brain, opts: { signal?: AbortSignal; pollMs?: number; log?: (s: string) => void; stayForTasks?: boolean } = {}) {
   const log = opts.log ?? (() => {});
   let cursor = 0;
@@ -167,7 +173,12 @@ export async function runSeat(c: SeatClient, brain: Brain, opts: { signal?: Abor
           log(`${c.seat} ${a.kind}`);
         } catch (err) {
           log(`${c.seat} action rejected: ${(err as Error).message}; passing`);
-          await c.pass(`(my ${a.kind} was rejected: ${(err as Error).message.slice(0, 200)})`).catch(() => {});
+          // A withheld post must not reach the table, not even through the error text.
+          const body = (err as ByobError).code === 'E_DISCLOSURE'
+            ? withheld(a.kind)
+            : `(my ${a.kind} was rejected: ${(err as Error).message.slice(0, 200)})`;
+          // If even that pass is refused, pass without a body so the seat never keeps the floor.
+          await c.pass(body).catch(() => c.pass()).catch(e => log(`${c.seat} could not yield the floor: ${(e as Error).message}`));
         }
         continue;
       }
@@ -177,8 +188,9 @@ export async function runSeat(c: SeatClient, brain: Brain, opts: { signal?: Abor
           await c.status(t.id, 'running', 'started in my owner\'s workspace');
           log(`${c.seat} executing ${t.id}`);
           const r = await brain.onTask(t, p).catch(err => ({ ok: false, body: String(err) }));
-          if (r.ok) await c.receipt(t.id, r.body, (r as { artifact?: unknown }).artifact);
-          else await c.status(t.id, 'failed', r.body.slice(0, 2000));
+          // A receipt that cannot be disclosed cannot be verified, so the task ends as failed.
+          if (r.ok) await orWithheld(c.receipt(t.id, r.body, (r as { artifact?: unknown }).artifact), () => c.status(t.id, 'failed', withheld('receipt')));
+          else await orWithheld(c.status(t.id, 'failed', r.body.slice(0, 2000)), () => c.status(t.id, 'failed', withheld('failure report')));
         }
       }
       if (brain.onReported) {
@@ -188,7 +200,7 @@ export async function runSeat(c: SeatClient, brain: Brain, opts: { signal?: Abor
           if (t.executor === c.seat || !t.receipt_seq) continue;
           verified.add(t.id);
           const v = await brain.onReported(t, await c.expand(t.receipt_seq), p);
-          if (v) await c.verify(t.id, v.result, v.body);
+          if (v) await orWithheld(c.verify(t.id, v.result, v.body), () => c.verify(t.id, v.result, withheld('verification note')));
         }
       }
       if (p.status === 'closed') {
