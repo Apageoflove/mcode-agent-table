@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://byob.dev/schemas/v0.1/common.json",
+  "title": "BYOB v0.1 shared definitions",
+  "$defs": {
+    "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:@-]{0,127}$" },
+    "address": { "type": "string", "pattern": "^(\\*|@[A-Za-z0-9][A-Za-z0-9._:@-]{0,127}|role:[A-Za-z0-9._-]{1,64})$" },
+    "effect": {
+      "type": "object",
+      "required": ["owner", "resource", "action"],
+      "additionalProperties": false,
+      "properties": {
+        "owner": { "$ref": "#/$defs/id" },
+        "resource": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "action": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "args": { "type": "object" }
+      }
+    },
+    "budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": { "tokens_used": { "type": "integer", "minimum": 0 } }
+    }
+  }
+}

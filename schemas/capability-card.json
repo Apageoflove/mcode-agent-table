@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://byob.dev/schemas/v0.1/capability-card.json",
+  "title": "Capability card: what a seat's bot can do on its owner's behalf",
+  "type": "object",
+  "required": ["bot", "capabilities"],
+  "additionalProperties": false,
+  "properties": {
+    "bot": { "type": "string", "description": "Bot product / implementation, e.g. 'minimax-code@0.6.5'" },
+    "description": { "type": "string", "maxLength": 2000 },
+    "proxy": { "type": "boolean", "description": "True when a human or script stands in for a product without an open interface. Must be shown to every seat." },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["resource", "actions"],
+        "additionalProperties": false,
+        "properties": {
+          "resource": { "type": "string", "minLength": 1 },
+          "actions": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+          "requires_approval": { "type": "boolean", "description": "Owner wants to approve even own-owner proposals on this resource." }
+        }
+      }
+    }
+  }
+}

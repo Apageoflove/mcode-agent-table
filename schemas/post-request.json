@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://byob.dev/schemas/v0.1/post-request.json",
+  "title": "Seat post envelope (what a seat sends; Table Core assigns seq)",
+  "type": "object",
+  "required": ["kind"],
+  "additionalProperties": false,
+  "properties": {
+    "kind": { "enum": ["say", "pass", "raise_hand", "proposal", "decision", "status", "receipt", "verify"] },
+    "to": { "type": "array", "items": { "$ref": "common.json#/$defs/address" } },
+    "reply_to": { "type": "integer", "minimum": 1 },
+    "body": { "type": "string", "maxLength": 100000 },
+    "effects": { "type": "array", "items": { "$ref": "common.json#/$defs/effect" }, "maxItems": 16 },
+    "refs": { "type": "array", "items": { "type": "string" } },
+    "task": { "type": "string" },
+    "state": { "enum": ["running", "failed"] },
+    "result": { "enum": ["pass", "fail"] },
+    "artifact": {},
+    "budget": { "$ref": "common.json#/$defs/budget" }
+  }
+}

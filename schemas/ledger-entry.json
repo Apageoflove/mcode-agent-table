@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://byob.dev/schemas/v0.1/ledger-entry.json",
+  "title": "Ledger entry (written only by Table Core)",
+  "type": "object",
+  "required": ["seq", "table", "seat", "kind"],
+  "properties": {
+    "seq": { "type": "integer", "minimum": 1 },
+    "table": { "$ref": "common.json#/$defs/id" },
+    "seat": { "type": "string", "description": "Seat id, 'core' for Table Core, or 'owner:<id>' for owner approvals." },
+    "kind": { "enum": ["system", "say", "pass", "raise_hand", "proposal", "decision", "approval", "rejection", "status", "receipt", "verify"] },
+    "event": { "type": "string", "description": "For kind=system: table_opened | seat_joined | floor_granted | task_opened | task_state | table_closed | time | audit" },
+    "to": { "type": "array", "items": { "$ref": "common.json#/$defs/address" } },
+    "reply_to": { "type": "integer" },
+    "body": { "type": "string" },
+    "truncated": { "type": "boolean" },
+    "effects": { "type": "array", "items": { "$ref": "common.json#/$defs/effect" } },
+    "refs": { "type": "array", "items": { "type": "string" } },
+    "task": { "type": "string" },
+    "state": { "type": "string" },
+    "result": { "enum": ["pass", "fail"] },
+    "artifact": {},
+    "data": { "type": "object" },
+    "budget": { "$ref": "common.json#/$defs/budget" },
+    "ts": { "type": "string", "description": "Wall clock, audit only. Never included in projections." }
+  }
+}

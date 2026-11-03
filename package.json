@@ -1,0 +1,37 @@
+{
+  "name": "byob-table",
+  "version": "0.1.0",
+  "description": "BYOB (Bring Your Own Bot) Table Protocol v0.1 — reference Table server, seat SDK, MCode adapter and MCP bridge",
+  "type": "module",
+  "license": "MIT",
+  "author": "Tao He",
+  "engines": {
+    "node": ">=22.19"
+  },
+  "bin": {
+    "byob": "./dist/src/cli.js"
+  },
+  "scripts": {
+    "build": "tsc -p .",
+    "typecheck": "tsc -p . --noEmit",
+    "test": "vitest run",
+    "byob": "tsx src/cli.ts",
+    "demo:scripted": "tsx demo/scripted-demo.ts",
+    "demo:mcode": "tsx demo/mcode-demo.ts"
+  },
+  "dependencies": {
+    "@minimax-ai/code-sdk": "^0.1.0",
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "ajv": "^8.20.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.1.0"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true
+  }
+}

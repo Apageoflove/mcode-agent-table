@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://byob.dev/schemas/v0.1/owner-decision.json",
+  "title": "Owner approval or rejection of a task (signed by the owner key, not by a bot)",
+  "type": "object",
+  "required": ["owner", "task", "decision", "nonce", "signature"],
+  "additionalProperties": false,
+  "properties": {
+    "owner": { "$ref": "common.json#/$defs/id" },
+    "task": { "type": "string" },
+    "decision": { "enum": ["approve", "reject"] },
+    "reason": { "type": "string", "maxLength": 2000 },
+    "nonce": { "type": "string", "minLength": 8 },
+    "signature": { "type": "string", "description": "Ed25519 over canonical JSON of {table, owner, task, decision, reason, nonce}." }
+  }
+}

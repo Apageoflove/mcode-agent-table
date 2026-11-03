@@ -1,0 +1,112 @@
+[
+  {
+    "seat": "bot-tao",
+    "phase": "floor",
+    "usage": {
+      "inputTokens": 1621,
+      "outputTokens": 596,
+      "cacheReadTokens": 128,
+      "totalTokens": 2217
+    },
+    "model": {
+      "providerId": "minimax",
+      "modelId": "MiniMax-M3",
+      "variant": "thinking",
+      "providerSource": "provider",
+      "providerKind": "minimax-api-key",
+      "protocol": "anthropic-messages"
+    },
+    "sessionId": "mvs_6cd2f468d0034379a99eb837b8f61071"
+  },
+  {
+    "seat": "bot-jenny",
+    "phase": "floor",
+    "usage": {
+      "inputTokens": 1747,
+      "outputTokens": 583,
+      "cacheReadTokens": 128,
+      "totalTokens": 2330
+    },
+    "model": {
+      "providerId": "minimax",
+      "modelId": "MiniMax-M3",
+      "variant": "thinking",
+      "providerSource": "provider",
+      "providerKind": "minimax-api-key",
+      "protocol": "anthropic-messages"
+    },
+    "sessionId": "mvs_da30404950ac43a9a96a70d3c6cb8efa"
+  },
+  {
+    "seat": "bot-tao",
+    "phase": "floor",
+    "usage": {
+      "inputTokens": 3221,
+      "outputTokens": 443,
+      "cacheReadTokens": 128,
+      "totalTokens": 3664
+    },
+    "model": {
+      "providerId": "minimax",
+      "modelId": "MiniMax-M3",
+      "variant": "thinking",
+      "providerSource": "provider",
+      "providerKind": "minimax-api-key",
+      "protocol": "anthropic-messages"
+    },
+    "sessionId": "mvs_6cd2f468d0034379a99eb837b8f61071"
+  },
+  {
+    "seat": "bot-jenny",
+    "phase": "floor",
+    "usage": {
+      "inputTokens": 3355,
+      "outputTokens": 594,
+      "cacheReadTokens": 128,
+      "totalTokens": 3949
+    },
+    "model": {
+      "providerId": "minimax",
+      "modelId": "MiniMax-M3"
+    },
+    "sessionId": "mvs_da30404950ac43a9a96a70d3c6cb8efa"
+  },
+  {
+    "seat": "judge",
+    "phase": "floor",
+    "usage": {
+      "inputTokens": 2316,
+      "outputTokens": 477,
+      "cacheReadTokens": 128,
+      "totalTokens": 2793
+    },
+    "model": {
+      "providerId": "minimax",
+      "modelId": "MiniMax-M3",
+      "variant": "thinking",
+      "providerSource": "provider",
+      "providerKind": "minimax-api-key",
+      "protocol": "anthropic-messages"
+    },
+    "sessionId": "mvs_268efcc7ef034f52b914d9ab0539674f"
+  },
+  {
+    "seat": "bot-jenny",
+    "phase": "task",
+    "usage": {
+      "inputTokens": 32252,
+      "outputTokens": 1176,
+      "cacheReadTokens": 32921,
+      "totalTokens": 33428
+    },
+    "model": {
+      "providerId": "minimax",
+      "modelId": "MiniMax-M3",
+      "variant": "thinking",
+      "providerSource": "provider",
+      "providerKind": "minimax-api-key",
+      "protocol": "anthropic-messages"
+    },
+    "sessionId": "mvs_1a3f4d406aab4c0eb1465088cb41eb0a"
+  }
+]

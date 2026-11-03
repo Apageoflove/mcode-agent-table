@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://byob.dev/schemas/v0.1/projection.json",
+  "title": "Per-seat projection",
+  "type": "object",
+  "required": ["protocol", "table", "seat", "prefix", "prefix_hash", "tail", "cursor", "floor", "status"],
+  "properties": {
+    "protocol": { "const": "byob/0.1" },
+    "table": { "type": "string" },
+    "seat": { "type": "string" },
+    "prefix": {
+      "type": "object",
+      "required": ["topic", "rules", "seats", "decisions"],
+      "properties": {
+        "topic": { "type": "string" },
+        "rules": { "type": "object" },
+        "seats": { "type": "array" },
+        "decisions": { "type": "array" }
+      }
+    },
+    "prefix_hash": { "type": "string" },
+    "tail": { "type": "array", "items": { "$ref": "ledger-entry.json" } },
+    "cursor": { "type": "integer" },
+    "floor": {
+      "type": "object",
+      "properties": {
+        "holder": { "type": ["string", "null"] },
+        "you_have_floor": { "type": "boolean" },
+        "grant_seq": { "type": ["integer", "null"] },
+        "max_chars": { "type": "integer" }
+      }
+    },
+    "status": { "enum": ["open", "closed"] },
+    "my_tasks": { "type": "array" }
+  }
+}

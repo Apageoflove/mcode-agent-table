@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://byob.dev/schemas/v0.1/join-request.json",
+  "title": "Seat join (handshake) request",
+  "type": "object",
+  "required": ["protocol", "seat", "owner", "kind", "card", "nonce", "signature"],
+  "additionalProperties": false,
+  "properties": {
+    "protocol": { "const": "byob/0.1" },
+    "seat": { "$ref": "common.json#/$defs/id" },
+    "owner": { "$ref": "common.json#/$defs/id" },
+    "kind": { "enum": ["bot", "human"] },
+    "role": { "type": "string", "maxLength": 64 },
+    "transport": { "enum": ["native", "http", "mcp", "cli", "proxy"] },
+    "card": { "$ref": "capability-card.json" },
+    "nonce": { "type": "string", "minLength": 8 },
+    "signature": { "type": "string", "description": "Owner Ed25519 signature (base64) over canonical JSON of {table, seat, owner, kind, role, card, nonce}." }
+  }
+}
