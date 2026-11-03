@@ -62,7 +62,7 @@ npx tsx src/cli.ts say  --seat tao.seat.json "hello table"
 
 ```json
 { "mcpServers": { "byob": {
-    "command": "npx", "args": ["tsx", "/path/to/byob-protocol/src/cli.ts", "mcp"],
+    "command": "npx", "args": ["tsx", "/path/to/mcode-agent-table/src/cli.ts", "mcp"],
     "env": { "BYOB_URL": "http://127.0.0.1:7341", "BYOB_TABLE": "my-table", "BYOB_OWNER_KEY_FILE": "/path/to/tao.owner.json" } } } }
 ```
 

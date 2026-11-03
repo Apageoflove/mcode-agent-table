@@ -1,5 +1,5 @@
 {
-  "name": "byob-table",
+  "name": "mcode-agent-table",
   "version": "0.1.0",
   "description": "BYOB (Bring Your Own Bot) Table Protocol v0.1 — reference Table server, seat SDK, MCode adapter and MCP bridge",
   "type": "module",
